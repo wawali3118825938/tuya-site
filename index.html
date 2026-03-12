@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<!-- 已替换为你的高德地图API Key -->
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=ea2639976725938ce154ba8268055cc2"></script>
 <style>
 * {
@@ -30,14 +29,11 @@
   --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 强化文艺风背景：多层渐变+纹理，更有质感 */
 body {
   font-family: "Noto Serif SC", "Inter", serif;
   background: var(--dark-bg);
   background-image: 
-    /* 底层纹理 */
     url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23242730' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E"),
-    /* 径向渐变光斑 */
     radial-gradient(circle at 10% 20%, rgba(80, 90, 110, 0.1) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, rgba(70, 80, 100, 0.08) 0%, transparent 40%);
   color: var(--text-light);
@@ -46,7 +42,7 @@ body {
   margin: 0 auto;
   line-height: 1.7;
   min-height: 100vh;
-  scroll-behavior: smooth; /* 平滑滚动 */
+  scroll-behavior: smooth;
 }
 
 /* 导航 */
@@ -145,6 +141,13 @@ body {
   color: var(--primary-light);
   padding-left: 12px;
   border-left: 2px solid var(--primary);
+}
+
+.map-section p {
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
 }
 
 .map-container {
@@ -300,13 +303,33 @@ body {
 
 .sub-category {
   margin-bottom: 28px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.sub-category:hover {
+  transform: translateY(-2px);
 }
 
 .sub-category h4 {
   font-size: 16px;
-  color: var(--text-muted);
+  color: var(--primary-light);
   margin-bottom: 12px;
-  font-weight: 300;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sub-category h4::after {
+  content: "→";
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.sub-category:hover h4::after {
+  transform: translateX(4px);
 }
 
 /* 图片网格 */
@@ -334,12 +357,116 @@ body {
   object-fit: cover;
   cursor: pointer;
   transition: 0.5s ease;
-  opacity: 0;
+  opacity: 1;
 }
 
+/* 详情信息样式 - 主页简洁显示 */
 .item .info {
   padding: 10px 12px;
   font-size: 14px;
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+
+.item .info .short {
+  display: block;
+}
+
+.item .info .full {
+  display: none;
+}
+
+/* 图库页面样式 */
+.gallery-page {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--dark-bg);
+  z-index: 9999;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.gallery-page .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.gallery-page .header h2 {
+  font-size: 32px;
+  color: var(--primary-light);
+  font-weight: 500;
+}
+
+.gallery-page .close-btn {
+  padding: 10px 20px;
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--primary-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 14px;
+}
+
+.gallery-page .close-btn:hover {
+  background: var(--dark-hover);
+}
+
+.gallery-page .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.gallery-page .gallery-item {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--dark-card);
+  transition: var(--transition);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.gallery-page .gallery-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.gallery-page .gallery-item img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* 图库页完整信息样式 */
+.gallery-page .gallery-item .info {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.gallery-page .gallery-item .info .detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.gallery-page .gallery-item .info .label {
+  color: var(--primary-light);
+  font-weight: 400;
+}
+
+.gallery-page .gallery-item .info .value {
   color: var(--text-faint);
 }
 
@@ -454,7 +581,7 @@ body {
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.97);
-  z-index: 999;
+  z-index: 99999;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
@@ -477,6 +604,16 @@ body {
   .article-list { grid-template-columns: 1fr; }
   .map-container { grid-template-columns: 1fr; }
   #map { height: 350px; }
+  .gallery-page .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .gallery-page .gallery-item img { height: 220px; }
+  .gallery-page .header h2 { font-size: 24px; }
+  .gallery-page .gallery-item .info .detail-row {
+    flex-direction: column;
+    margin-bottom: 6px;
+  }
+  .gallery-page .gallery-item .info .label {
+    margin-bottom: 2px;
+  }
 }
 </style>
 </head>
@@ -547,37 +684,415 @@ body {
     <input id="search" placeholder="搜索：广州美术学院 / 中心湖 / 穗石村..." oninput="search()">
   </div>
 
+  <!-- 学校分类 - 主页仅显示最新1张 -->
   <div class="category"><h3>🏛️ 学校</h3>
-    <div class="sub-category"><h4>广东工业大学</h4><div class="grid"><div class="item" data-tag="广东工业大学 广工"><img src="photo/学校/广工/1.jpg" loading="lazy"><div class="info">广东工业大学 | 2024.03 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>广州大学</h4><div class="grid"><div class="item" data-tag="广州大学 广大"><img src="photo/学校/广大/1.jpg" loading="lazy"><div class="info">广州大学 | 2024.01 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>广州美术学院</h4><div class="grid"><div class="item" data-tag="广州美术学院 广美"><img src="photo/学校/广美/1.jpg" loading="lazy"><div class="info">广州美术学院 | 2024.02 | 已覆盖</div></div></div></div>
-    <div class="sub-category"><h4>广东药科大学</h4><div class="grid"><div class="item" data-tag="广东药科大学 广药"><img src="photo/学校/广药/1.jpg" loading="lazy"><div class="info">广东药科大学 | 2023.12 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>广州医科大学</h4><div class="grid"><div class="item" data-tag="广州医科大学 广医"><img src="photo/学校/广医/1.jpg" loading="lazy"><div class="info">广州医科大学 | 2024.01 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>广东外语外贸大学</h4><div class="grid"><div class="item" data-tag="广东外语外贸大学 广外"><img src="photo/学校/广外/1.jpg" loading="lazy"><div class="info">广东外语外贸大学 | 2023.11 | 已覆盖</div></div></div></div>
-    <div class="sub-category"><h4>华南理工大学</h4><div class="grid"><div class="item" data-tag="华南理工大学 华工"><img src="photo/学校/华工/1.jpg" loading="lazy"><div class="info">华南理工大学 | 2024.02 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>华南师范大学</h4><div class="grid"><div class="item" data-tag="华南师范大学 华师"><img src="photo/学校/华师/1.jpg" loading="lazy"><div class="info">华南师范大学 | 2024.03 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>星海音乐学院</h4><div class="grid"><div class="item" data-tag="星海音乐学院 星海"><img src="photo/学校/星海/1.jpg" loading="lazy"><div class="info">星海音乐学院 | 2023.12 | 已覆盖</div></div></div></div>
-    <div class="sub-category"><h4>中山大学</h4><div class="grid"><div class="item" data-tag="中山大学 中大"><img src="photo/学校/中大/1.jpg" loading="lazy"><div class="info">中山大学 | 2024.01 | 已保留</div></div></div></div>
+    <div class="sub-category" onclick="openGallery('广东工业大学', '学校/广工')">
+      <h4>广东工业大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="广东工业大学 广工">
+          <img src="photo/学校/广工/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">广东工业大学 | 2024.03 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小李</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-03-15</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">广工大学城校区教学楼B栋后墙</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('广州大学', '学校/广大')">
+      <h4>广州大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="广州大学 广大">
+          <img src="photo/学校/广大/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">广州大学 | 2024.01 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">小张</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小王</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-01-20</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">广大生活区3栋楼下围墙</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('广州美术学院', '学校/广美')">
+      <h4>广州美术学院</h4>
+      <div class="grid">
+        <div class="item" data-tag="广州美术学院 广美">
+          <img src="photo/学校/广美/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">广州美术学院 | 2024.02 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">陈同学（广美油画系）</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小林</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-02-08</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">广美设计学院旁小巷墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('广东药科大学', '学校/广药')">
+      <h4>广东药科大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="广东药科大学 广药">
+          <img src="photo/学校/广药/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">广东药科大学 | 2023.12 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小陈</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2023-12-10</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">广药图书馆旁涂鸦墙</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('广州医科大学', '学校/广医')">
+      <h4>广州医科大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="广州医科大学 广医">
+          <img src="photo/学校/广医/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">广州医科大学 | 2024.01 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">李同学（广医艺术社）</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小杨</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-01-05</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">广医教学楼A栋侧面墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('广东外语外贸大学', '学校/广外')">
+      <h4>广东外语外贸大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="广东外语外贸大学 广外">
+          <img src="photo/学校/广外/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">广东外语外贸大学 | 2023.11 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">国际学院留学生</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小周</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2023-11-22</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">广外相思河旁步道墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('华南理工大学', '学校/华工')">
+      <h4>华南理工大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="华南理工大学 华工">
+          <img src="photo/学校/华工/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">华南理工大学 | 2024.02 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小吴</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-02-18</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">华工体育馆旁围墙</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('华南师范大学', '学校/华师')">
+      <h4>华南师范大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="华南师范大学 华师">
+          <img src="photo/学校/华师/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">华南师范大学 | 2024.03 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">王同学（华师美术学院）</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小郑</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-03-08</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">华师文科楼后小巷</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('星海音乐学院', '学校/星海')">
+      <h4>星海音乐学院</h4>
+      <div class="grid">
+        <div class="item" data-tag="星海音乐学院 星海">
+          <img src="photo/学校/星海/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">星海音乐学院 | 2023.12 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">音乐系学生</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小冯</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2023-12-25</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">星海音乐厅旁墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('中山大学', '学校/中大')">
+      <h4>中山大学</h4>
+      <div class="grid">
+        <div class="item" data-tag="中山大学 中大">
+          <img src="photo/学校/中大/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">中山大学 | 2024.01 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小何</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-01-12</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">中大图书馆旁涂鸦墙</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- 村落分类 - 主页仅显示最新1张 -->
   <div class="category"><h3>🏘️ 村落</h3>
-    <div class="sub-category"><h4>贝岗村</h4><div class="grid"><div class="item" data-tag="贝岗村 贝岗"><img src="photo/村落/贝岗村/1.jpg" loading="lazy"><div class="info">贝岗村 | 2024.02 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>北亭村</h4><div class="grid"><div class="item" data-tag="北亭村 北亭"><img src="photo/村落/北亭村/1.jpg" loading="lazy"><div class="info">北亭村 | 2024.03 | 已覆盖</div></div></div></div>
-    <div class="sub-category"><h4>南亭村</h4><div class="grid"><div class="item" data-tag="南亭村 南亭"><img src="photo/村落/南亭村/1.jpg" loading="lazy"><div class="info">南亭村 | 2024.01 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>穗石村</h4><div class="grid"><div class="item" data-tag="穗石村 穗石"><img src="photo/村落/穗石村/1.jpg" loading="lazy"><div class="info">穗石村 | 2023.12 | 已保留</div></div></div></div>
+    <div class="sub-category" onclick="openGallery('贝岗村', '村落/贝岗村')">
+      <h4>贝岗村</h4>
+      <div class="grid">
+        <div class="item" data-tag="贝岗村 贝岗">
+          <img src="photo/村落/贝岗村/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">贝岗村 | 2024.02 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">本地村民</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小朱</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-02-22</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">贝岗村商业街入口墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('北亭村', '村落/北亭村')">
+      <h4>北亭村</h4>
+      <div class="grid">
+        <div class="item" data-tag="北亭村 北亭">
+          <img src="photo/村落/北亭村/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">北亭村 | 2024.03 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">大学生</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小胡</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-03-10</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">北亭村小吃街旁墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('南亭村', '村落/南亭村')">
+      <h4>南亭村</h4>
+      <div class="grid">
+        <div class="item" data-tag="南亭村 南亭">
+          <img src="photo/村落/南亭村/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">南亭村 | 2024.01 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">街头艺术家</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小袁</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-01-28</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">南亭村江边步道墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('穗石村', '村落/穗石村')">
+      <h4>穗石村</h4>
+      <div class="grid">
+        <div class="item" data-tag="穗石村 穗石">
+          <img src="photo/村落/穗石村/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">穗石村 | 2023.12 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小韩</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2023-12-18</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">穗石村菜市场旁墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- 街道分类 - 主页仅显示最新1张 -->
   <div class="category"><h3>🛣️ 街道</h3>
-    <div class="sub-category"><h4>中心湖</h4><div class="grid"><div class="item" data-tag="中心湖"><img src="photo/街道/中心湖/1.jpg" loading="lazy"><div class="info">中心湖 | 2024.02 | 已覆盖</div></div></div></div>
-    <div class="sub-category"><h4>内环路</h4><div class="grid"><div class="item" data-tag="内环路 内环"><img src="photo/街道/内环路/1.jpg" loading="lazy"><div class="info">内环路 | 2024.03 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>中环路</h4><div class="grid"><div class="item" data-tag="中环路 中环"><img src="photo/街道/中环路/1.jpg" loading="lazy"><div class="info">中环路 | 2024.01 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>外环路</h4><div class="grid"><div class="item" data-tag="外环路 外环"><img src="photo/街道/外环路/1.jpg" loading="lazy"><div class="info">外环路 | 2023.12 | 已覆盖</div></div></div></div>
-    <div class="sub-category"><h4>天桥</h4><div class="grid"><div class="item" data-tag="天桥"><img src="photo/街道/天桥/1.jpg" loading="lazy"><div class="info">天桥 | 2024.02 | 已保留</div></div></div></div>
-    <div class="sub-category"><h4>地下通道</h4><div class="grid"><div class="item" data-tag="地下通道"><img src="photo/街道/地下通道/1.jpg" loading="lazy"><div class="info">地下通道 | 2024.03 | 已覆盖</div></div></div></div>
+    <div class="sub-category" onclick="openGallery('中心湖', '街道/中心湖')">
+      <h4>中心湖</h4>
+      <div class="grid">
+        <div class="item" data-tag="中心湖">
+          <img src="photo/街道/中心湖/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">中心湖 | 2024.02 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">大学城学生</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小秦</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-02-12</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">中心湖公园栏杆墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('内环路', '街道/内环路')">
+      <h4>内环路</h4>
+      <div class="grid">
+        <div class="item" data-tag="内环路 内环">
+          <img src="photo/街道/内环路/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">内环路 | 2024.03 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小魏</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-03-20</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">内环路辅路墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('中环路', '街道/中环路')">
+      <h4>中环路</h4>
+      <div class="grid">
+        <div class="item" data-tag="中环路 中环">
+          <img src="photo/街道/中环路/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">中环路 | 2024.01 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">街头艺术爱好者</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小龙</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-01-15</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">中环路公交站旁墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('外环路', '街道/外环路')">
+      <h4>外环路</h4>
+      <div class="grid">
+        <div class="item" data-tag="外环路 外环">
+          <img src="photo/街道/外环路/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">外环路 | 2023.12 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小方</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2023-12-05</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">外环路绿化带墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('天桥', '街道/天桥')">
+      <h4>天桥</h4>
+      <div class="grid">
+        <div class="item" data-tag="天桥">
+          <img src="photo/街道/天桥/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">天桥 | 2024.02 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">美术生</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小廖</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-02-28</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">大学城北亭天桥内侧墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sub-category" onclick="openGallery('地下通道', '街道/地下通道')">
+      <h4>地下通道</h4>
+      <div class="grid">
+        <div class="item" data-tag="地下通道">
+          <img src="photo/街道/地下通道/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">地下通道 | 2024.03 | 已覆盖</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小程</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-03-05</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">大学城南站地下通道墙面</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已覆盖</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- 其他分类 - 主页仅显示最新1张 -->
   <div class="category"><h3>📦 其他</h3>
-    <div class="grid"><div class="item" data-tag="其他"><img src="photo/其他/1.jpg" loading="lazy"><div class="info">其他 | 2024.01 | 已保留</div></div></div>
+    <div class="sub-category" onclick="openGallery('其他', '其他')">
+      <h4>其他</h4>
+      <div class="grid">
+        <div class="item" data-tag="其他">
+          <img src="photo/其他/1.jpg" loading="lazy">
+          <div class="info">
+            <span class="short">其他 | 2024.01 | 已保留</span>
+            <div class="full">
+              <div class="detail-row"><span class="label">原作者：</span><span class="value">匿名</span></div>
+              <div class="detail-row"><span class="label">拍摄者：</span><span class="value">小江</span></div>
+              <div class="detail-row"><span class="label">发现时间：</span><span class="value">2024-01-08</span></div>
+              <div class="detail-row"><span class="label">发现地点：</span><span class="value">大学城综合商业体后巷</span></div>
+              <div class="detail-row"><span class="label">状态：</span><span class="value">已保留</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -620,6 +1135,16 @@ body {
   </div>
 </section>
 
+<!-- 图库弹窗 -->
+<div class="gallery-page" id="galleryPage">
+  <div class="header">
+    <h2 id="galleryTitle">广州大学 - 涂鸦图库</h2>
+    <button class="close-btn" onclick="closeGallery()">关闭图库</button>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- 文章弹窗 -->
 <div class="modal" id="articleModal">
   <div class="content">
     <h2 id="articleTitle"></h2>
@@ -628,197 +1153,226 @@ body {
   </div>
 </div>
 
+<!-- 图片弹窗 -->
 <div class="img-modal" id="imgModal" onclick="closeImg()">
   <img id="bigImg">
 </div>
 
 <script>
-// ========== 核心功能：地图初始化与交互 ==========
+// ========== 全局变量 ==========
 let map;
-// 大学城主要点位坐标（可根据实际位置调整）
+// 区域坐标配置
 const locations = {
   "广东工业大学": [113.4186, 23.0458],
   "广州美术学院": [113.4089, 23.0426],
   "中心湖": [113.4125, 23.0482],
   "贝岗村": [113.4157, 23.0495],
-  "南亭村": [113.4028, 23.0397]
+  "南亭村": [113.4028, 23.0397],
+  "广州大学": [113.4186, 23.0458],
+  "广东药科大学": [113.4186, 23.0458],
+  "广州医科大学": [113.4186, 23.0458],
+  "广东外语外贸大学": [113.4186, 23.0458],
+  "华南理工大学": [113.4186, 23.0458],
+  "华南师范大学": [113.4186, 23.0458],
+  "星海音乐学院": [113.4186, 23.0458],
+  "中山大学": [113.4186, 23.0458],
+  "北亭村": [113.4186, 23.0458],
+  "穗石村": [113.4186, 23.0458],
+  "内环路": [113.4186, 23.0458],
+  "中环路": [113.4186, 23.0458],
+  "外环路": [113.4186, 23.0458],
+  "天桥": [113.4186, 23.0458],
+  "地下通道": [113.4186, 23.0458],
+  "其他": [113.4186, 23.0458]
 };
 
-// 初始化地图
-function initMap() {
-  // 初始化地图，中心点为大学城
-  map = new AMap.Map('map', {
-    center: [113.4125, 23.045],
-    zoom: 15,
-    mapStyle: 'amap://styles/darkblue', // 深色地图风格，匹配网站调性
-    resizeEnable: true
-  });
-
-  // 添加地图标记
-  for (const [name, coord] of Object.entries(locations)) {
-    const marker = new AMap.Marker({
-      position: coord,
-      title: name,
-      map: map,
-      icon: new AMap.Icon({
-        size: new AMap.Size(30, 30),
-        image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMTUiIGZpbGw9IiM4ZmE4YzYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjgiIGZpbGw9IiNhYmNiZGUiLz4KPC9zdmc+Cg==', // 自定义标记图标
-        imageSize: new AMap.Size(30, 30)
-      })
-    });
-
-    // 标记点击事件
-    marker.on('click', () => {
-      showLocationGraffiti(name);
-    });
-  }
-
-  // 区域列表点击事件
-  document.querySelectorAll('.location-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const locName = item.dataset.location;
-      showLocationGraffiti(locName);
-      
-      // 地图定位到该点
-      map.setCenter(locations[locName]);
-      map.setZoom(16);
-      
-      // 高亮选中项
-      document.querySelectorAll('.location-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
-}
-
-// 根据位置显示对应涂鸦
-function showLocationGraffiti(locationName) {
-  const resultTitle = document.getElementById('resultTitle');
-  const resultGrid = document.getElementById('resultGrid');
-  const mapResult = document.getElementById('mapResult');
-  
-  // 设置标题
-  resultTitle.textContent = `${locationName} - 涂鸦档案`;
-  
-  // 清空原有内容
-  resultGrid.innerHTML = '';
-  
-  // 查找对应涂鸦项
-  const items = document.querySelectorAll(`.item[data-tag*="${locationName}"]`);
-  
-  if (items.length > 0) {
-    // 复制涂鸦项到地图结果区
-    items.forEach(item => {
-      const clone = item.cloneNode(true);
-      resultGrid.appendChild(clone);
-    });
-    
-    // 显示结果区
-    mapResult.style.display = 'block';
-    
-    // 平滑滚动到结果区
-    mapResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    resultGrid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">暂无该区域的涂鸦记录</p>';
-    mapResult.style.display = 'block';
-  }
-}
-
-// ========== 原有功能优化 ==========
-// 图片懒加载+淡入效果
-document.addEventListener('DOMContentLoaded', function() {
-  // 初始化地图（需等待高德API加载完成）
-  if (window.AMap) {
-    initMap();
-  } else {
-    setTimeout(initMap, 1000); // 重试
-  }
-
-  // 图片懒加载
-  const images = document.querySelectorAll('.item img');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.onload = () => {
-          img.style.transition = 'opacity 0.8s ease';
-          img.style.opacity = 1;
-        };
-        observer.unobserve(img);
+// 各区域图片配置（包含完整备注信息）
+const galleryConfig = {
+  "学校/广工": [
+    { 
+      src: "photo/学校/广工/1.jpg", 
+      info: {
+        author: "匿名",
+        photographer: "小李",
+        findTime: "2024-03-15",
+        findLocation: "广工大学城校区教学楼B栋后墙",
+        status: "已保留"
       }
-    });
-  });
-  images.forEach(img => observer.observe(img));
-
-  // 滚动渐入效果
-  const sections = document.querySelectorAll('.section');
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+    }
+  ],
+  "学校/广大": [
+    { 
+      src: "photo/学校/广大/1.jpg", 
+      info: {
+        author: "小张",
+        photographer: "小王",
+        findTime: "2024-01-20",
+        findLocation: "广大生活区3栋楼下围墙",
+        status: "已保留"
       }
-    });
-  }, { threshold: 0.1 });
-  
-  sections.forEach(section => sectionObserver.observe(section));
-
-  // 导航高亮
-  window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY;
-    document.querySelectorAll('.navbar a').forEach(link => {
-      const targetId = link.getAttribute('href').substring(1);
-      const targetSection = document.getElementById(targetId);
-      
-      if (targetSection) {
-        const sectionTop = targetSection.offsetTop - 100;
-        const sectionBottom = sectionTop + targetSection.offsetHeight;
-        
-        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
-          document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
-          link.classList.add('active');
-        }
+    }
+  ],
+  "学校/广美": [
+    { 
+      src: "photo/学校/广美/1.jpg", 
+      info: {
+        author: "陈同学（广美油画系）",
+        photographer: "小林",
+        findTime: "2024-02-08",
+        findLocation: "广美设计学院旁小巷墙面",
+        status: "已覆盖"
       }
-    });
-  });
-});
-
-// 图片放大
-const imgModal = document.getElementById('imgModal');
-const bigImg = document.getElementById('bigImg');
-document.addEventListener('click', function(e) {
-  if (e.target.tagName === 'IMG' && e.target.closest('.item')) {
-    bigImg.src = e.target.src;
-    imgModal.style.display = 'flex';
-  }
-});
-
-function closeImg() { 
-  imgModal.style.display = 'none'; 
-}
-
-// 搜索（支持完整名称和缩写搜索）
-function search() {
-  const t = document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('.item').forEach(i => {
-    i.classList.toggle('hidden', !i.dataset.tag.toLowerCase().includes(t));
-  });
-}
-
-// 童话
-const fairytales = {
-  1:{title:"我在广美转角遇见的涂鸦",content:`<p>那天傍晚，我在广美教学楼后面的小巷里散步，本来只是想找个安静的地方自习。</p><p>结果一转弯，整面墙撞进眼里。</p><p>没有署名，没有日期，就那样安静地、强烈地存在着。</p><p>我突然意识到：大学城藏着太多这样的瞬间，没人看见，很快会被覆盖。于是我拍下了它，也开始了这段记录。`},
-  2:{title:"中心湖的涂鸦会消失吗",content:`<p>中心湖旁边的栏杆、楼梯、墙角，都出现过涂鸦。</p><p>有的过几天就刷白了，有的却留了很久。</p><p>我们不知道它们能存在多久，但我们知道：存在过，就值得被记住。</p><p>这个网站，就是为了留住这些“会消失的艺术”。`}
-};
-function openFairytale(id){const a=fairytales[id];document.getElementById('articleTitle').innerText=a.title;document.getElementById('articleContent').innerHTML=a.content;document.getElementById('articleModal').style.display='flex'}
-
-// 故事
-const ourStories = {
-  1:{title:"我们为什么要做这个网站",content:`<p>我们是一群生活在广州大学城的学生。</p><p>我们喜欢走路、喜欢拍照、喜欢街头的每一笔痕迹。</p><p>我们发现，这里有太多精彩的涂鸦，没人系统记录，很快就会消失。</p><p>于是我们决定：做一个永久档案，把所有涂鸦都收进来。</p><p>这就是这个网站的起点。`},
-  2:{title:"第一次走遍大学城十所高校",content:`<p>那一天，我们从广美出发，走过广大、广工、华工、华师、广外、中大、广药、广医、星海。</p><p>我们拍了几百张照片，腿都走断了，但心里特别满足。</p><p>我们看到了不同学校的风格，看到了年轻人的情绪与热爱。</p><p>那一刻我们确定：这件事，值得一直做下去。`}
-};
-function openOurStory(id){const a=ourStories[id];document.getElementById('articleTitle').innerText=a.title;document.getElementById('articleContent').innerHTML=a.content;document.getElementById('articleModal').style.display='flex'}
-
-function closeArticle(){document.getElementById('articleModal').style.display='none'}
-</script>
-</body>
-</html>
-
+    }
+  ],
+  "学校/广药": [
+    { 
+      src: "photo/学校/广药/1.jpg", 
+      info: {
+        author: "匿名",
+        photographer: "小陈",
+        findTime: "2023-12-10",
+        findLocation: "广药图书馆旁涂鸦墙",
+        status: "已保留"
+      }
+    }
+  ],
+  "学校/广医": [
+    { 
+      src: "photo/学校/广医/1.jpg", 
+      info: {
+        author: "李同学（广医艺术社）",
+        photographer: "小杨",
+        findTime: "2024-01-05",
+        findLocation: "广医教学楼A栋侧面墙面",
+        status: "已保留"
+      }
+    }
+  ],
+  "学校/广外": [
+    { 
+      src: "photo/学校/广外/1.jpg", 
+      info: {
+        author: "国际学院留学生",
+        photographer: "小周",
+        findTime: "2023-11-22",
+        findLocation: "广外相思河旁步道墙面",
+        status: "已覆盖"
+      }
+    }
+  ],
+  "学校/华工": [
+    { 
+      src: "photo/学校/华工/1.jpg", 
+      info: {
+        author: "匿名",
+        photographer: "小吴",
+        findTime: "2024-02-18",
+        findLocation: "华工体育馆旁围墙",
+        status: "已保留"
+      }
+    }
+  ],
+  "学校/华师": [
+    { 
+      src: "photo/学校/华师/1.jpg", 
+      info: {
+        author: "王同学（华师美术学院）",
+        photographer: "小郑",
+        findTime: "2024-03-08",
+        findLocation: "华师文科楼后小巷",
+        status: "已保留"
+      }
+    }
+  ],
+  "学校/星海": [
+    { 
+      src: "photo/学校/星海/1.jpg", 
+      info: {
+        author: "音乐系学生",
+        photographer: "小冯",
+        findTime: "2023-12-25",
+        findLocation: "星海音乐厅旁墙面",
+        status: "已覆盖"
+      }
+    }
+  ],
+  "学校/中大": [
+    { 
+      src: "photo/学校/中大/1.jpg", 
+      info: {
+        author: "匿名",
+        photographer: "小何",
+        findTime: "2024-01-12",
+        findLocation: "中大图书馆旁涂鸦墙",
+        status: "已保留"
+      }
+    }
+  ],
+  "村落/贝岗村": [
+    { 
+      src: "photo/村落/贝岗村/1.jpg", 
+      info: {
+        author: "本地村民",
+        photographer: "小朱",
+        findTime: "2024-02-22",
+        findLocation: "贝岗村商业街入口墙面",
+        status: "已保留"
+      }
+    }
+  ],
+  "村落/北亭村": [
+    { 
+      src: "photo/村落/北亭村/1.jpg", 
+      info: {
+        author: "大学生",
+        photographer: "小胡",
+        findTime: "2024-03-10",
+        findLocation: "北亭村小吃街旁墙面",
+        status: "已覆盖"
+      }
+    }
+  ],
+  "村落/南亭村": [
+    { 
+      src: "photo/村落/南亭村/1.jpg", 
+      info: {
+        author: "街头艺术家",
+        photographer: "小袁",
+        findTime: "2024-01-28",
+        findLocation: "南亭村江边步道墙面",
+        status: "已保留"
+      }
+    }
+  ],
+  "村落/穗石村": [
+    { 
+      src: "photo/村落/穗石村/1.jpg", 
+      info: {
+        author: "匿名",
+        photographer: "小韩",
+        findTime: "2023-12-18",
+        findLocation: "穗石村菜市场旁墙面",
+        status: "已保留"
+      }
+    }
+  ],
+  "街道/中心湖": [
+    { 
+      src: "photo/街道/中心湖/1.jpg", 
+      info: {
+        author: "大学城学生",
+        photographer: "小秦",
+        findTime: "2024-02-12",
+        findLocation: "中心湖公园栏杆墙面",
+        status: "已覆盖"
+      }
+    }
+  ],
+  "街道/内环路": [
+    { 
+      src: "photo/街道/内环路/1.jpg", 
+      info: {
+        author: "匿名",
+        photographer: "小魏",
+        findTime: "2024-03-20",
+        findLocation: "内环路辅路墙面",
