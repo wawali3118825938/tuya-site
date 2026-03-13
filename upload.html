@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>上传内容 - 广州大学城涂鸦档案</title>
+<!-- 引入 EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function() {
+    // 初始化 EmailJS - 已替换为您的 Public Key
+    emailjs.init('jU9IXLb3WCBZ5p0rR');
+  })();
+</script>
+<style>
+/* 使用和主站一样的样式 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #8fa8c6;
+  --primary-light: #c0d4e9;
+  --dark-bg: #0f1014;
+  --dark-card: #1a1c23;
+  --dark-hover: #242730;
+  --text-light: #e8e9ec;
+  --text-muted: #9ca3af;
+  --text-faint: #6b7280;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body { 
+  font-family: "Noto Serif SC", "Inter", serif;
+  background: var(--dark-bg);
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23242730' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 10% 20%, rgba(80, 90, 110, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(70, 80, 100, 0.08) 0%, transparent 40%);
+  color: var(--text-light);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+.container { 
+  background: var(--dark-card);
+  padding: 40px; border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.04);
+  margin-top: 20px;
+  max-width: 700px;
+  margin: 20px auto;
+}
+.header { 
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 30px; padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+h1 { 
+  color: var(--primary-light); font-weight: 500;
+  margin: 0; font-size: 28px;
+}
+.user-info { 
+  color: var(--text-muted); font-size: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.user-avatar { 
+  width: 36px; height: 36px; background: var(--primary);
+  color: var(--dark-bg); border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-weight: bold;
+}
+.back-link { 
+  display: block; text-align: center; margin-bottom: 20px;
+  color: var(--text-muted); text-decoration: none;
+}
+.back-link:hover { color: var(--primary-light); }
+.tabs { 
+  display: flex; border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 30px;
+}
+.tab { 
+  flex: 1; padding: 15px; text-align: center; cursor: pointer;
+  border-bottom: 3px solid transparent; transition: var(--transition);
+  color: var(--text-muted);
+}
+.tab.active { 
+  border-bottom-color: var(--primary); 
+  color: var(--primary-light); font-weight: 500;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.input-box { margin-bottom: 20px; }
+.input-box label { 
+  display: block; margin-bottom: 8px; 
+  color: var(--primary-light); font-weight: 400;
+}
+.input-box input, .input-box select, .input-box textarea { 
+  width: 100%; padding: 12px; background: var(--dark-bg);
+  border: 1px solid rgba(255,255,255,0.08); color: var(--text-light);
+  border-radius: var(--radius-sm); font-size: 16px; font-family: inherit;
+}
+.input-box textarea { 
+  min-height: 120px; resize: vertical;
+}
+.btn { 
+  width: 100%; padding: 15px; background: var(--primary);
+  color: var(--dark-bg); border: none; border-radius: var(--radius-sm);
+  font-size: 16px; cursor: pointer; margin-top: 10px; font-weight: bold;
+  transition: var(--transition);
+}
+.btn:hover { 
+  background: var(--primary-light); transform: translateY(-2px);
+}
+.btn:disabled { 
+  background: var(--text-faint); cursor: not-allowed;
+  transform: none;
+}
+.success { 
+  display: none; text-align: center; 
+  margin-top: 20px; padding: 30px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: var(--radius);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+.success h2 { 
+  color: #4CAF50; margin-bottom: 20px;
+}
+.notice { 
+  background: rgba(143, 168, 198, 0.1);
+  color: var(--primary-light); padding: 15px;
+  border-radius: var(--radius-sm); margin-bottom: 20px;
+  border-left: 3px solid var(--primary);
+}
+.notice h3 { margin: 0 0 10px 0; }
+.upload-box { 
+  border: 3px dashed rgba(255,255,255,0.1); padding: 40px;
+  text-align: center; border-radius: var(--radius); margin: 20px 0;
+  cursor: pointer; transition: var(--transition);
+  background: rgba(0,0,0,0.2);
+}
+.upload-box:hover { 
+  border-color: var(--primary); 
+  background: rgba(143, 168, 198, 0.05);
+}
+#fileInput { display: none; }
+.preview { margin: 20px 0; display: none; }
+.preview img { 
+  max-width: 100%; max-height: 300px; 
+  border-radius: var(--radius-sm); display: block; margin: 0 auto;
+}
+.loading { 
+  display: none; text-align: center; 
+  padding: 20px; color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 头部 -->
+  <div class="header">
+    <h1>📤 上传内容</h1>
+    <div class="user-info">
+      <div class="user-avatar" id="userAvatar">U</div>
+      <div id="userName">用户</div>
+    </div>
+  </div>
+  
+  <a href="index.html" class="back-link">← 返回网站首页</a>
+  
+  <!-- 通知 -->
+  <div class="notice">
+    <h3>📋 上传须知</h3>
+    <p>您上传的内容需要管理员审核后才能显示在网站上</p>
+    <p>审核通过后您会收到通知邮件</p>
+  </div>
+  
+  <!-- 选项卡 -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('photo')">📸 上传照片</div>
+    <div class="tab" onclick="showTab('article')">📝 投稿文章</div>
+  </div>
+  
+  <!-- 照片上传 -->
+  <div id="photoTab" class="tab-content active">
+    <!-- 上传框 -->
+    <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+      <div style="font-size: 48px; color: var(--primary);">📸</div>
+      <h3>拖拽照片到这里</h3>
+      <p>或点击选择照片（支持 JPG、PNG 格式）</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*">
+    
+    <!-- 预览 -->
+    <div class="preview" id="preview">
+      <img id="previewImage">
+    </div>
+    
+    <!-- 照片表单 -->
+    <div class="form" id="photoForm">
+      <h3>填写照片信息</h3>
+      
+      <div class="input-box">
+        <label>选择地点 *</label>
+        <select id="location">
+          <option value="">请选择...</option>
+          <optgroup label="学校">
+            <option value="中山大学">中山大学</option>
+            <option value="华南理工大学">华南理工大学</option>
+            <option value="华南师范大学">华南师范大学</option>
+            <option value="广东工业大学">广东工业大学</option>
+            <option value="广州美术学院">广州美术学院</option>
+            <option value="广州大学">广州大学</option>
+            <option value="广东外语外贸大学">广东外语外贸大学</option>
+            <option value="广东药科大学">广东药科大学</option>
+            <option value="星海音乐学院">星海音乐学院</option>
+            <option value="广州中医药大学">广州中医药大学</option>
+          </optgroup>
+          <optgroup label="村落">
+            <option value="贝岗村">贝岗村</option>
+            <option value="南亭村">南亭村</option>
+            <option value="北亭村">北亭村</option>
+          </optgroup>
+          <optgroup label="街道">
+            <option value="中心湖">中心湖</option>
+            <option value="大学城外环">大学城外环</option>
+            <option value="大学城新天地">大学城新天地</option>
+            <option value="岭南印象园">岭南印象园</option>
+            <option value="大学城中环">大学城中环</option>
+            <option value="大学城内环">大学城内环</option>
+            <option value="其他街道">其他街道</option>
+          </optgroup>
+        </select>
+      </div>
+      
+      <div class="input-box">
+        <label>原作者 *</label>
+        <input type="text" id="author" placeholder="涂鸦的作者，可填'匿名'">
+      </div>
+      
+      <div class="input-box">
+        <label>拍摄者 *</label>
+        <input type="text" id="photographer" placeholder="您的名字" value="">
+      </div>
+      
+      <div class="input-box">
+        <label>发现时间 *</label>
+        <input type="date" id="findTime">
+      </div>
+      
+      <div class="input-box">
+        <label>发现地点 *</label>
+        <input type="text" id="findLocation" placeholder="详细位置，如图书馆东墙">
+      </div>
+      
+      <div class="input-box">
+        <label>状态 *</label>
+        <select id="status">
+          <option value="已保留">已保留</option>
+          <option value="已覆盖">已覆盖</option>
+          <option value="已损坏">已损坏</option>
+        </select>
+      </div>
+      
+      <div class="input-box">
+        <label>描述（可选）</label>
+        <textarea id="description" rows="3" placeholder="这张涂鸦的故事或您的感受..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="uploadPhoto()">📤 提交审核</button>
+    </div>
+  </div>
+  
+  <!-- 文章投稿 -->
+  <div id="articleTab" class="tab-content">
+    <!-- 文章表单 -->
+    <div class="form" id="articleForm">
+      <h3>投稿文章</h3>
+      
+      <div class="input-box">
+        <label>投稿板块 *</label>
+        <select id="articleType">
+          <option value="">请选择...</option>
+          <option value="涂鸦童话">涂鸦童话</option>
+          <option value="我们的故事">我们的故事</option>
+        </select>
+      </div>
+      
+      <div class="input-box">
+        <label>文章标题 *</label>
+        <input type="text" id="articleTitle" placeholder="请输入文章标题">
+      </div>
+      
+      <div class="input-box">
+        <label>作者 *</label>
+        <input type="text" id="articleAuthor" placeholder="文章作者">
+      </div>
+      
+      <div class="input-box">
+        <label>内容 *</label>
+        <textarea id="articleContent" rows="8" placeholder="请写下您的故事..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="uploadArticle()">📤 提交审核</button>
+    </div>
+  </div>
+  
+  <!-- 加载中 -->
+  <div class="loading" id="loading">
+    <div style="margin-bottom: 10px;">⏳ 正在提交，请稍候...</div>
+  </div>
+  
+  <!-- 成功提示 -->
+  <div class="success" id="success">
+    <h2>✅ 提交成功！</h2>
+    <p id="successMessage"></p>
+    <button class="btn" onclick="location.reload()" style="background:#2196F3;margin-top:20px;">继续上传</button>
+  </div>
+</div>
+
+<script>
+// 检查登录状态
+const userData = localStorage.getItem('guangzhou_user');
+if (!userData) {
+  alert('请先登录！');
+  window.location.href = 'login.html';
+}
+
+// 显示用户信息
+const user = JSON.parse(userData);
+document.getElementById('userName').textContent = user.nickname;
+document.getElementById('userAvatar').textContent = user.nickname.charAt(0).toUpperCase();
+document.getElementById('photographer').value = user.nickname;
+document.getElementById('findTime').valueAsDate = new Date();
+document.getElementById('photoForm').style.display = 'none';
+
+// 切换选项卡
+function showTab(tabName) {
+  // 隐藏所有选项卡内容
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  // 显示选中的选项卡
+  if (tabName === 'photo') {
+    document.getElementById('photoTab').classList.add('active');
+    document.querySelector('.tab:nth-child(1)').classList.add('active');
+  } else {
+    document.getElementById('articleTab').classList.add('active');
+    document.querySelector('.tab:nth-child(2)').classList.add('active');
+  }
+}
+
+// 设置拖拽功能
+const uploadBox = document.querySelector('.upload-box');
+const fileInput = document.getElementById('fileInput');
+
+uploadBox.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files[0]) showPreview(e.target.files[0]);
+});
+
+uploadBox.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadBox.style.borderColor = 'var(--primary)';
+});
+
+uploadBox.addEventListener('dragleave', () => {
+  uploadBox.style.borderColor = 'rgba(255,255,255,0.1)';
+});
+
+uploadBox.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadBox.style.borderColor = 'rgba(255,255,255,0.1)';
+  if (e.dataTransfer.files[0]) showPreview(e.dataTransfer.files[0]);
+});
+
+// 预览照片
+function showPreview(file) {
+  if (!file.type.startsWith('image/')) {
+    alert('请选择图片文件！');
+    return;
+  }
+  
+  if (file.size > 10 * 1024 * 1024) {
+    alert('图片太大，请选择小于10MB的图片');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('previewImage').src = e.target.result;
+    document.getElementById('preview').style.display = 'block';
+    document.getElementById('photoForm').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// 上传照片
+function uploadPhoto() {
+  const author = document.getElementById('author').value;
+  const photographer = document.getElementById('photographer').value;
+  const findTime = document.getElementById('findTime').value;
+  const location = document.getElementById('location').value;
+  const findLocation = document.getElementById('findLocation').value;
+  const status = document.getElementById('status').value;
+  const description = document.getElementById('description').value;
+  const file = fileInput.files[0];
+  
+  // 验证
+  if (!author || !photographer || !findTime || !location || !findLocation || !status) {
+    alert('请填写所有带*的信息！');
+    return;
+  }
+  
+  if (!file) {
+    alert('请先选择照片！');
+    return;
+  }
+  
+  // 显示加载中
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('photoForm').style.display = 'none';
+  
+  // 发送邮件通知
+  sendPhotoEmail({
+    nickname: user.nickname,
+    email: user.email,
+    location: location,
+    author: author,
+    photographer: photographer,
+    find_time: findTime,
+    find_location: findLocation,
+    status: status,
+    description: description || '无',
+    submission_time: new Date().toLocaleString()
+  });
+}
+
+// 上传文章
+function uploadArticle() {
+  const articleType = document.getElementById('articleType').value;
+  const articleTitle = document.getElementById('articleTitle').value;
+  const articleAuthor = document.getElementById('articleAuthor').value;
+  const articleContent = document.getElementById('articleContent').value;
+  
+  // 验证
+  if (!articleType || !articleTitle || !articleAuthor || !articleContent) {
+    alert('请填写所有带*的信息！');
+    return;
+  }
+  
+  // 显示加载中
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('articleForm').style.display = 'none';
+  
+  // 发送邮件通知
+  sendArticleEmail({
+    nickname: user.nickname,
+    email: user.email,
+    type: articleType,
+    title: articleTitle,
+    article_author: articleAuthor,
+    content: articleContent.substring(0, 500) + (articleContent.length > 500 ? '...' : ''),
+    submission_time: new Date().toLocaleString()
+  });
+}
+
+// 发送照片投稿邮件
+function sendPhotoEmail(data) {
+  const templateParams = {
+    nickname: data.nickname,
+    email: data.email,
+    location: data.location,
+    author: data.author,
+    photographer: data.photographer,
+    find_time: data.find_time,
+    find_location: data.find_location,
+    status: data.status,
+    description: data.description,
+    submission_time: data.submission_time
+  };
+  
+  // 已替换为您的 Service ID 和照片模板 ID
+  emailjs.send('service_nte32ag', 'template_udz9tlv', templateParams)
+    .then(function(response) {
+      console.log('SUCCESS!', response.status, response.text);
+      showSuccess('照片提交成功！管理员会尽快审核，审核通过后会邮件通知您。');
+    }, function(error) {
+      console.log('FAILED...', error);
+      alert('提交失败，请稍后重试。错误：' + JSON.stringify(error));
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('photoForm').style.display = 'block';
+    });
+}
+
+// 发送文章投稿邮件
+function sendArticleEmail(data) {
+  const templateParams = {
+    nickname: data.nickname,
+    email: data.email,
+    type: data.type,
+    title: data.title,
+    article_author: data.article_author,
+    content: data.content,
+    submission_time: data.submission_time
+  };
+  
+  // 已替换为您的 Service ID 和文章模板 ID
+  emailjs.send('service_nte32ag', 'template_bwg3ho9', templateParams)
+    .then(function(response) {
+      console.log('SUCCESS!', response.status, response.text);
+      showSuccess('文章投稿成功！管理员会尽快审核，审核通过后会邮件通知您。');
+    }, function(error) {
+      console.log('FAILED...', error);
+      alert('提交失败，请稍后重试。错误：' + JSON.stringify(error));
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('articleForm').style.display = 'block';
+    });
+}
+
+// 显示成功信息
+function showSuccess(message) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('successMessage').textContent = message;
+  document.getElementById('success').style.display = 'block';
+}
+</script>
+</body>
+</html>
