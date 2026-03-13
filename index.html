@@ -1560,8 +1560,14 @@ function search() {
   let keyword = document.getElementById('search').value.toLowerCase().trim();
   let items = document.querySelectorAll('.item');
   let subCategories = document.querySelectorAll('.sub-category');
+  let categories = document.querySelectorAll('.category');
   
-  // 如果没有搜索词，显示所有内容
+  // 移除之前的高亮效果
+  items.forEach(item => {
+    item.classList.remove('highlight');
+  });
+  
+  // 如果没有搜索词，重置所有显示
   if (!keyword) {
     items.forEach(item => {
       item.style.display = "block";
@@ -1569,14 +1575,31 @@ function search() {
     subCategories.forEach(cat => {
       cat.style.display = "block";
     });
+    categories.forEach(cat => {
+      cat.style.display = "block";
+    });
+    
+    // 隐藏结果计数
+    let resultCount = document.querySelector('.search-result-count');
+    if (resultCount) resultCount.style.display = 'none';
+    
     return;
   }
   
-  // 记录哪些分类有可见项目
-  let categoryHasVisibleItems = new Set();
+  let visibleCount = 0;
+  let visibleCategories = new Set();
+  let visibleSubCategories = new Set();
   
-  // 搜索所有项目
+  // 先隐藏所有项目
   items.forEach(item => {
+    item.style.display = "none";
+  });
+  
+  // 搜索并显示匹配的项目
+  items.forEach(item => {
+    let shouldShow = false;
+    let matchReason = "";
+    
     // 获取标签信息
     let tag = item.dataset.tag ? item.dataset.tag.toLowerCase() : "";
     
@@ -1588,37 +1611,48 @@ function search() {
     let img = item.querySelector('img');
     let imgSrc = img ? img.src : "";
     
-    // 检查是否匹配
-    let shouldShow = false;
-    
     // 1. 检查标签匹配
     if (tag.includes(keyword)) {
       shouldShow = true;
+      matchReason = "标签匹配";
     }
     
     // 2. 检查图片信息文字匹配
     else if (infoText.includes(keyword)) {
       shouldShow = true;
+      matchReason = "信息匹配";
     }
     
     // 3. 检查图库配置中的详细信息
     else {
-      // 遍历所有图库配置查找匹配的图片
       for (let galleryKey in galleryConfig) {
         let galleryItems = galleryConfig[galleryKey];
         for (let i = 0; i < galleryItems.length; i++) {
           let galleryItem = galleryItems[i];
           
-          // 如果图片匹配
           if (galleryItem.src === imgSrc) {
             let info = galleryItem.info;
+            let matchFound = false;
             
-            // 检查所有信息字段是否包含关键词
-            if ((info.author && info.author.toLowerCase().includes(keyword)) ||
-                (info.photographer && info.photographer.toLowerCase().includes(keyword)) ||
-                (info.findLocation && info.findLocation.toLowerCase().includes(keyword)) ||
-                (info.status && info.status.toLowerCase().includes(keyword)) ||
-                (info.findTime && info.findTime.toLowerCase().includes(keyword))) {
+            // 检查每个字段
+            if (info.author && info.author.toLowerCase().includes(keyword)) {
+              matchFound = true;
+              matchReason = "作者匹配";
+            } else if (info.photographer && info.photographer.toLowerCase().includes(keyword)) {
+              matchFound = true;
+              matchReason = "拍摄者匹配";
+            } else if (info.findLocation && info.findLocation.toLowerCase().includes(keyword)) {
+              matchFound = true;
+              matchReason = "地点匹配";
+            } else if (info.status && info.status.toLowerCase().includes(keyword)) {
+              matchFound = true;
+              matchReason = "状态匹配";
+            } else if (info.findTime && info.findTime.toLowerCase().includes(keyword)) {
+              matchFound = true;
+              matchReason = "时间匹配";
+            }
+            
+            if (matchFound) {
               shouldShow = true;
               break;
             }
@@ -1629,34 +1663,66 @@ function search() {
     }
     
     // 设置显示/隐藏
-    item.style.display = shouldShow ? "block" : "none";
-    
-    // 如果项目可见，记录其父分类
-    if (shouldShow && item.closest('.sub-category')) {
-      let parentCategory = item.closest('.sub-category');
-      categoryHasVisibleItems.add(parentCategory);
+    if (shouldShow) {
+      item.style.display = "block";
+      item.classList.add('highlight');
+      visibleCount++;
+      
+      // 记录父分类
+      let parentSubCat = item.closest('.sub-category');
+      if (parentSubCat) {
+        visibleSubCategories.add(parentSubCat);
+        let parentCategory = parentSubCat.closest('.category');
+        if (parentCategory) {
+          visibleCategories.add(parentCategory);
+        }
+      }
     }
   });
   
-  // 处理分类显示/隐藏
+  // 处理子分类显示
   subCategories.forEach(cat => {
-    if (categoryHasVisibleItems.has(cat)) {
+    if (visibleSubCategories.has(cat)) {
       cat.style.display = "block";
     } else {
-      // 检查这个分类是否有直接可见的项目
-      let itemsInCat = cat.querySelectorAll('.item');
-      let hasVisible = false;
-      for (let item of itemsInCat) {
-        if (item.style.display !== 'none') {
-          hasVisible = true;
-          break;
-        }
-      }
-      cat.style.display = hasVisible ? "block" : "none";
+      cat.style.display = "none";
     }
   });
+  
+  // 处理主分类显示
+  categories.forEach(cat => {
+    let hasVisibleSubCat = false;
+    let subCatsInCat = cat.querySelectorAll('.sub-category');
+    for (let subCat of subCatsInCat) {
+      if (visibleSubCategories.has(subCat)) {
+        hasVisibleSubCat = true;
+        break;
+      }
+    }
+    
+    if (hasVisibleSubCat) {
+      cat.style.display = "block";
+    } else {
+      cat.style.display = "none";
+    }
+  });
+  
+  // 显示结果计数
+  let resultCountElement = document.querySelector('.search-result-count');
+  if (!resultCountElement) {
+    resultCountElement = document.createElement('div');
+    resultCountElement.className = 'search-result-count';
+    document.querySelector('.search-box').appendChild(resultCountElement);
+  }
+  
+  if (visibleCount > 0) {
+    resultCountElement.textContent = `找到 ${visibleCount} 个相关涂鸦`;
+    resultCountElement.style.display = 'block';
+  } else {
+    resultCountElement.textContent = '未找到相关涂鸦';
+    resultCountElement.style.display = 'block';
+  }
 }
-
 function initScrollAnimation() {
   let sections = document.querySelectorAll('.section');
   let observer = new IntersectionObserver(entries => {
@@ -1709,6 +1775,7 @@ window.search = search;
 </script>
 </body>
 </html>
+
 
 
 
