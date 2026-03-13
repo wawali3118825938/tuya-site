@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>管理员后台 - 广州大学城涂鸦档案</title>
+<style>
+/* 使用和主站一样的样式 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #8fa8c6;
+  --primary-light: #c0d4e9;
+  --dark-bg: #0f1014;
+  --dark-card: #1a1c23;
+  --dark-hover: #242730;
+  --text-light: #e8e9ec;
+  --text-muted: #9ca3af;
+  --text-faint: #6b7280;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body { 
+  font-family: "Noto Serif SC", "Inter", serif;
+  background: var(--dark-bg);
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23242730' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 10% 20%, rgba(80, 90, 110, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(70, 80, 100, 0.08) 0%, transparent 40%);
+  color: var(--text-light);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+.login-box { 
+  max-width: 400px; margin: 100px auto; padding: 40px;
+  background: var(--dark-card); border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.04);
+  text-align: center;
+}
+.login-box h1 { 
+  text-align: center; color: var(--primary-light);
+  margin-bottom: 30px; font-weight: 500;
+}
+.login-box input { 
+  width: 100%; padding: 12px; margin-bottom: 20px;
+  background: var(--dark-bg); border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-light); border-radius: 8px;
+}
+.btn { 
+  padding: 12px 20px; background: var(--primary);
+  color: var(--dark-bg); border: none; border-radius: 8px;
+  font-size: 16px; cursor: pointer; font-weight: bold;
+  transition: var(--transition);
+  margin: 5px;
+}
+.btn:hover { background: var(--primary-light); }
+.container { 
+  background: var(--dark-card);
+  padding: 40px; border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.04);
+  margin-top: 20px;
+}
+.tabs { 
+  display: flex; border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 20px;
+}
+.tab { 
+  padding: 10px 20px; cursor: pointer; 
+  border-bottom: 3px solid transparent; transition: var(--transition);
+  color: var(--text-muted);
+}
+.tab.active { 
+  border-bottom-color: var(--primary); font-weight: 500;
+  color: var(--primary-light);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.item-card { 
+  border: 1px solid rgba(255,255,255,0.08); padding: 20px;
+  margin-bottom: 20px; border-radius: var(--radius);
+  background: rgba(0,0,0,0.2);
+}
+.item-image { 
+  width: 200px; height: 150px; object-fit: cover;
+  border-radius: 5px; margin-right: 20px; float: left;
+}
+.item-info { overflow: hidden; }
+.item-info h3 { 
+  margin: 0 0 10px 0; color: var(--primary-light);
+  font-weight: 500;
+}
+.item-info p { 
+  margin: 5px 0; color: var(--text-muted);
+  font-size: 14px;
+}
+.approve-btn { 
+  background: #28a745; color: white;
+  border: none; padding: 8px 16px; border-radius: 5px;
+  cursor: pointer; margin-right: 10px; margin-top: 10px;
+}
+.approve-btn:hover { background: #218838; }
+.reject-btn { 
+  background: #dc3545; color: white;
+  border: none; padding: 8px 16px; border-radius: 5px;
+  cursor: pointer; margin-right: 10px; margin-top: 10px;
+}
+.reject-btn:hover { background: #c82333; }
+.edit-btn { 
+  background: #17a2b8; color: white;
+  border: none; padding: 8px 16px; border-radius: 5px;
+  cursor: pointer; margin-right: 10px; margin-top: 10px;
+}
+.edit-btn:hover { background: #138496; }
+.delete-btn { 
+  background: #6c757d; color: white;
+  border: none; padding: 8px 16px; border-radius: 5px;
+  cursor: pointer; margin-right: 10px; margin-top: 10px;
+}
+.delete-btn:hover { background: #5a6268; }
+.stats { 
+  display: flex; gap: 20px; margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.stat-card { 
+  flex: 1; min-width: 150px; padding: 20px;
+  background: rgba(0,0,0,0.2); border-radius: var(--radius);
+  text-align: center;
+}
+.stat-number { 
+  font-size: 36px; font-weight: bold; color: var(--primary);
+  margin-bottom: 5px;
+}
+.stat-label { color: var(--text-muted); font-size: 14px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { 
+  display: block; margin-bottom: 5px; 
+  color: var(--primary-light);
+}
+.form-group input, .form-group select, .form-group textarea { 
+  width: 100%; padding: 10px; background: var(--dark-bg);
+  border: 1px solid rgba(255,255,255,0.08); color: var(--text-light);
+  border-radius: 5px;
+}
+.form-group textarea { 
+  height: 100px; resize: vertical;
+}
+.empty-message { 
+  text-align: center; color: var(--text-muted);
+  padding: 40px; font-size: 16px;
+}
+.back-link { 
+  display: block; text-align: center; margin-bottom: 20px;
+  color: var(--text-muted); text-decoration: none;
+}
+.back-link:hover { color: var(--primary-light); }
+</style>
+</head>
+<body>
+
+<!-- 登录框 -->
+<div id="loginBox" class="login-box">
+  <h1>管理员登录</h1>
+  <input type="password" id="adminPassword" placeholder="请输入管理员密码">
+  <button class="btn" onclick="adminLogin()">登录</button>
+  <p style="margin-top:20px;">
+    <a href="index.html" style="color:var(--text-muted);">← 返回网站首页</a>
+  </p>
+</div>
+
+<!-- 管理员面板 -->
+<div id="adminPanel" class="container" style="display:none;">
+  <h1 style="text-align:center;color:var(--primary-light);">👑 管理员后台</h1>
+  
+  <a href="index.html" class="back-link">← 返回网站首页</a>
+  
+  <!-- 统计数据 -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-number" id="statPending">0</div>
+      <div class="stat-label">待审核</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="statApproved">0</div>
+      <div class="stat-label">已通过</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="statAll">0</div>
+      <div class="stat-label">总投稿</div>
+    </div>
+  </div>
+  
+  <!-- 选项卡 -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('pending')">📨 待审核</div>
+    <div class="tab" onclick="showTab('approved')">✅ 已通过</div>
+    <div class="tab" onclick="showTab('add')">➕ 新增内容</div>
+  </div>
+  
+  <!-- 待审核 -->
+  <div id="pendingTab" class="tab-content active">
+    <h2>待审核的内容</h2>
+    <div id="pendingList">
+      <div class="empty-message">正在加载...</div>
+    </div>
+  </div>
+  
+  <!-- 已通过 -->
+  <div id="approvedTab" class="tab-content">
+    <h2>已通过的内容</h2>
+    <div id="approvedList">
+      <div class="empty-message">正在加载...</div>
+    </div>
+  </div>
+  
+  <!-- 新增内容 -->
+  <div id="addTab" class="tab-content">
+    <h2>新增内容</h2>
+    <div style="margin-bottom:20px;">
+      <button class="btn" onclick="showAddPhoto()" style="background:#ffc107;color:#000;">📸 新增照片</button>
+      <button class="btn" onclick="showAddArticle()" style="background:#ffc107;color:#000;">📝 新增文章</button>
+    </div>
+    <div id="addForm" style="background:rgba(0,0,0,0.2);padding:20px;border-radius:var(--radius);">
+      <div class="empty-message">请选择要新增的内容类型</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 管理员密码 - 可以在这里修改
+const ADMIN_PASSWORD = "admin2024";
+
+// 检查是否已登录管理员
+if (localStorage.getItem('guangzhou_admin') === ADMIN_PASSWORD) {
+  document.getElementById('loginBox').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  loadData();
+}
+
+// 管理员登录
+function adminLogin() {
+  const password = document.getElementById('adminPassword').value;
+  if (password === ADMIN_PASSWORD) {
+    localStorage.setItem('guangzhou_admin', password);
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadData();
+  } else {
+    alert('密码错误！');
+  }
+}
+
+// 显示选项卡
+function showTab(tabName) {
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  
+  if (tabName === 'pending') {
+    document.querySelector('.tab:nth-child(1)').classList.add('active');
+    document.getElementById('pendingTab').classList.add('active');
+    loadPendingSubmissions();
+  } else if (tabName === 'approved') {
+    document.querySelector('.tab:nth-child(2)').classList.add('active');
+    document.getElementById('approvedTab').classList.add('active');
+    loadApprovedSubmissions();
+  } else {
+    document.querySelector('.tab:nth-child(3)').classList.add('active');
+    document.getElementById('addTab').classList.add('active');
+  }
+}
+
+// 加载数据
+function loadData() {
+  updateStats();
+  loadPendingSubmissions();
+  loadApprovedSubmissions();
+}
+
+// 更新统计数据
+function updateStats() {
+  // 从本地存储获取数据
+  const pending = JSON.parse(localStorage.getItem('guangzhou_pending')) || [];
+  const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+  
+  document.getElementById('statPending').textContent = pending.length;
+  document.getElementById('statApproved').textContent = approved.length;
+  document.getElementById('statAll').textContent = pending.length + approved.length;
+}
+
+// 加载待审核内容
+function loadPendingSubmissions() {
+  const pending = JSON.parse(localStorage.getItem('guangzhou_pending')) || [];
+  const list = document.getElementById('pendingList');
+  
+  if (pending.length === 0) {
+    list.innerHTML = '<div class="empty-message">没有待审核的内容</div>';
+    return;
+  }
+  
+  list.innerHTML = '';
+  pending.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    
+    if (item.type === 'photo') {
+      card.innerHTML = `
+        ${item.imageData ? `<img src="${item.imageData}" class="item-image" onclick="showBigImg('${item.imageData}')" style="cursor:pointer;">` : ''}
+        <div class="item-info">
+          <h3>📸 照片投稿 - ${item.location}</h3>
+          <p><strong>投稿人：</strong>${item.nickname} (${item.email})</p>
+          <p><strong>投稿时间：</strong>${item.submission_time}</p>
+          <p><strong>原作者：</strong>${item.author}</p>
+          <p><strong>拍摄者：</strong>${item.photographer}</p>
+          <p><strong>发现时间：</strong>${item.find_time}</p>
+          <p><strong>详细位置：</strong>${item.find_location}</p>
+          <p><strong>状态：</strong>${item.status}</p>
+          ${item.description ? `<p><strong>描述：</strong>${item.description}</p>` : ''}
+          <button class="approve-btn" onclick="approveItem(${index}, 'photo')">✅ 通过</button>
+          <button class="reject-btn" onclick="rejectItem(${index}, 'photo')">❌ 拒绝</button>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="item-info">
+          <h3>📝 文章投稿 - ${item.type}</h3>
+          <p><strong>投稿人：</strong>${item.nickname} (${item.email})</p>
+          <p><strong>投稿时间：</strong>${item.submission_time}</p>
+          <p><strong>标题：</strong>${item.title}</p>
+          <p><strong>作者：</strong>${item.article_author}</p>
+          <p><strong>内容：</strong>${item.content.substring(0, 200)}${item.content.length > 200 ? '...' : ''}</p>
+          <button class="approve-btn" onclick="approveItem(${index}, 'article')">✅ 通过</button>
+          <button class="reject-btn" onclick="rejectItem(${index}, 'article')">❌ 拒绝</button>
+        </div>
+      `;
+    }
+    
+    list.appendChild(card);
+  });
+}
+
+// 加载已通过内容
+function loadApprovedSubmissions() {
+  const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+  const list = document.getElementById('approvedList');
+  
+  if (approved.length === 0) {
+    list.innerHTML = '<div class="empty-message">还没有通过审核的内容</div>';
+    return;
+  }
+  
+  list.innerHTML = '';
+  approved.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    
+    if (item.type === 'photo') {
+      card.innerHTML = `
+        ${item.imageData ? `<img src="${item.imageData}" class="item-image" onclick="showBigImg('${item.imageData}')" style="cursor:pointer;">` : ''}
+        <div class="item-info">
+          <h3>✅ 已通过 - ${item.location}</h3>
+          <p><strong>投稿人：</strong>${item.nickname}</p>
+          <p><strong>审核时间：</strong>${item.approved_time || '未记录'}</p>
+          <p><strong>原作者：</strong>${item.author}</p>
+          <p><strong>拍摄者：</strong>${item.photographer}</p>
+          <p><strong>发现时间：</strong>${item.find_time}</p>
+          <p><strong>详细位置：</strong>${item.find_location}</p>
+          <p><strong>状态：</strong>${item.status}</p>
+          <button class="edit-btn" onclick="editItem(${index}, 'photo')">✏️ 编辑</button>
+          <button class="delete-btn" onclick="deleteItem(${index}, 'photo')">🗑️ 删除</button>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="item-info">
+          <h3>✅ 已通过 - ${item.type}</h3>
+          <p><strong>投稿人：</strong>${item.nickname}</p>
+          <p><strong>审核时间：</strong>${item.approved_time || '未记录'}</p>
+          <p><strong>标题：</strong>${item.title}</p>
+          <p><strong>作者：</strong>${item.article_author}</p>
+          <p><strong>内容：</strong>${item.content.substring(0, 200)}${item.content.length > 200 ? '...' : ''}</p>
+          <button class="edit-btn" onclick="editItem(${index}, 'article')">✏️ 编辑</button>
+          <button class="delete-btn" onclick="deleteItem(${index}, 'article')">🗑️ 删除</button>
+        </div>
+      `;
+    }
+    
+    list.appendChild(card);
+  });
+}
+
+// 批准项目
+function approveItem(index, type) {
+  const pending = JSON.parse(localStorage.getItem('guangzhou_pending')) || [];
+  const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+  
+  if (index >= 0 && index < pending.length) {
+    const item = pending[index];
+    
+    // 验证类型匹配
+    if (item.type !== type) {
+      alert('类型不匹配！');
+      return;
+    }
+    
+    // 添加到已通过列表
+    item.approved_time = new Date().toLocaleString();
+    approved.push(item);
+    
+    // 从待审核列表移除
+    pending.splice(index, 1);
+    
+    // 保存到本地存储
+    localStorage.setItem('guangzhou_pending', JSON.stringify(pending));
+    localStorage.setItem('guangzhou_approved', JSON.stringify(approved));
+    
+    alert('已批准！');
+    loadData();
+  }
+}
+
+// 拒绝项目
+function rejectItem(index, type) {
+  if (confirm('确定要拒绝这个投稿吗？')) {
+    const pending = JSON.parse(localStorage.getItem('guangzhou_pending')) || [];
+    
+    if (index >= 0 && index < pending.length) {
+      const item = pending[index];
+      
+      // 验证类型匹配
+      if (item.type !== type) {
+        alert('类型不匹配！');
+        return;
+      }
+      
+      // 从待审核列表移除
+      pending.splice(index, 1);
+      
+      // 保存到本地存储
+      localStorage.setItem('guangzhou_pending', JSON.stringify(pending));
+      
+      alert('已拒绝！');
+      loadData();
+    }
+  }
+}
+
+// 编辑项目
+function editItem(index, type) {
+  if (type === 'photo') {
+    const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+    
+    if (index >= 0 && index < approved.length) {
+      const item = approved[index];
+      
+      if (item.type !== 'photo') {
+        alert('这不是照片项目！');
+        return;
+      }
+      
+      const newAuthor = prompt('修改原作者：', item.author);
+      if (newAuthor !== null) {
+        item.author = newAuthor;
+        localStorage.setItem('guangzhou_approved', JSON.stringify(approved));
+        loadApprovedSubmissions();
+        alert('修改成功！');
+      }
+    }
+  } else {
+    const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+    
+    if (index >= 0 && index < approved.length) {
+      const item = approved[index];
+      
+      if (item.type !== 'article') {
+        alert('这不是文章项目！');
+        return;
+      }
+      
+      const newTitle = prompt('修改标题：', item.title);
+      if (newTitle !== null) {
+        item.title = newTitle;
+        localStorage.setItem('guangzhou_approved', JSON.stringify(approved));
+        loadApprovedSubmissions();
+        alert('修改成功！');
+      }
+    }
+  }
+}
+
+// 删除项目
+function deleteItem(index, type) {
+  if (confirm('确定要删除这个项目吗？删除后无法恢复！')) {
+    const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+    
+    if (index >= 0 && index < approved.length) {
+      const item = approved[index];
+      
+      // 验证类型匹配
+      if (item.type !== type) {
+        alert('类型不匹配！');
+        return;
+      }
+      
+      // 从已通过列表移除
+      approved.splice(index, 1);
+      
+      // 保存到本地存储
+      localStorage.setItem('guangzhou_approved', JSON.stringify(approved));
+      
+      alert('已删除！');
+      loadData();
+    }
+  }
+}
+
+// 显示新增照片表单
+function showAddPhoto() {
+  const form = document.getElementById('addForm');
+  form.innerHTML = `
+    <h3>📸 新增照片</h3>
+    <div class="form-group">
+      <label>选择照片 *</label>
+      <input type="file" id="adminFileInput" accept="image/*">
+      <div id="adminPreview" style="margin-top:10px;"></div>
+    </div>
+    <div class="form-group">
+      <label>选择地点 *</label>
+      <select id="adminLocation">
+        <option value="中山大学">中山大学</option>
+        <option value="华南理工大学">华南理工大学</option>
+        <option value="华南师范大学">华南师范大学</option>
+        <option value="广东工业大学">广东工业大学</option>
+        <option value="广州美术学院">广州美术学院</option>
+        <option value="广州大学">广州大学</option>
+        <option value="广东外语外贸大学">广东外语外贸大学</option>
+        <option value="广东药科大学">广东药科大学</option>
+        <option value="星海音乐学院">星海音乐学院</option>
+        <option value="广州中医药大学">广州中医药大学</option>
+        <option value="贝岗村">贝岗村</option>
+        <option value="南亭村">南亭村</option>
+        <option value="北亭村">北亭村</option>
+        <option value="中心湖">中心湖</option>
+        <option value="大学城外环">大学城外环</option>
+        <option value="大学城新天地">大学城新天地</option>
+        <option value="岭南印象园">岭南印象园</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>原作者 *</label>
+      <input type="text" id="adminAuthor" placeholder="涂鸦的作者" value="匿名">
+    </div>
+    <div class="form-group">
+      <label>拍摄者 *</label>
+      <input type="text" id="adminPhotographer" placeholder="拍摄者" value="管理员">
+    </div>
+    <div class="form-group">
+      <label>发现时间 *</label>
+      <input type="date" id="adminFindTime" value="${new Date().toISOString().split('T')[0]}">
+    </div>
+    <div class="form-group">
+      <label>发现地点 *</label>
+      <input type="text" id="adminFindLocation" placeholder="详细位置">
+    </div>
+    <div class="form-group">
+      <label>状态 *</label>
+      <select id="adminStatus">
+        <option value="已保留">已保留</option>
+        <option value="已覆盖">已覆盖</option>
+        <option value="已损坏">已损坏</option>
+      </select>
+    </div>
+    <button class="btn" onclick="addPhoto()" style="background:#28a745;">💾 保存照片</button>
+  `;
+  
+  document.getElementById('adminFileInput').addEventListener('change', function(e) {
+    if (e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('adminPreview').innerHTML = 
+          `<img src="${e.target.result}" style="max-width:200px;max-height:150px;border-radius:5px;">`;
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  });
+}
+
+// 新增照片
+function addPhoto() {
+  const fileInput = document.getElementById('adminFileInput');
+  if (!fileInput.files[0]) {
+    alert('请选择照片！');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const photoData = {
+      id: Date.now(),
+      type: 'photo',
+      nickname: '管理员',
+      email: 'admin@example.com',
+      imageData: e.target.result,
+      location: document.getElementById('adminLocation').value,
+      author: document.getElementById('adminAuthor').value || '匿名',
+      photographer: document.getElementById('adminPhotographer').value || '管理员',
+      find_time: document.getElementById('adminFindTime').value || new Date().toISOString().split('T')[0],
+      find_location: document.getElementById('adminFindLocation').value || '未指定',
+      status: document.getElementById('adminStatus').value || '已保留',
+      description: '管理员添加',
+      submission_time: new Date().toLocaleString(),
+      approved_time: new Date().toLocaleString()
+    };
+    
+    const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+    approved.push(photoData);
+    localStorage.setItem('guangzhou_approved', JSON.stringify(approved));
+    
+    alert('照片添加成功！');
+    showTab('approved');
+  };
+  reader.readAsDataURL(fileInput.files[0]);
+}
+
+// 显示新增文章表单
+function showAddArticle() {
+  const form = document.getElementById('addForm');
+  form.innerHTML = `
+    <h3>📝 新增文章</h3>
+    <div class="form-group">
+      <label>投稿板块 *</label>
+      <select id="adminArticleType">
+        <option value="涂鸦童话">涂鸦童话</option>
+        <option value="我们的故事">我们的故事</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>文章标题 *</label>
+      <input type="text" id="adminArticleTitle" placeholder="请输入文章标题">
+    </div>
+    <div class="form-group">
+      <label>作者 *</label>
+      <input type="text" id="adminArticleAuthor" placeholder="文章作者" value="管理员">
+    </div>
+    <div class="form-group">
+      <label>内容 *</label>
+      <textarea id="adminArticleContent" placeholder="请写下文章内容..." rows="6"></textarea>
+    </div>
+    <button class="btn" onclick="addArticle()" style="background:#28a745;">💾 保存文章</button>
+  `;
+}
+
+// 新增文章
+function addArticle() {
+  const articleData = {
+    id: Date.now(),
+    type: 'article',
+    nickname: '管理员',
+    email: 'admin@example.com',
+    title: document.getElementById('adminArticleTitle').value,
+    article_author: document.getElementById('adminArticleAuthor').value || '管理员',
+    content: document.getElementById('adminArticleContent').value,
+    submission_time: new Date().toLocaleString(),
+    approved_time: new Date().toLocaleString()
+  };
+  
+  if (!articleData.title || !articleData.content) {
+    alert('请填写标题和内容！');
+    return;
+  }
+  
+  const approved = JSON.parse(localStorage.getItem('guangzhou_approved')) || [];
+  approved.push(articleData);
+  localStorage.setItem('guangzhou_approved', JSON.stringify(approved));
+  
+  alert('文章添加成功！');
+  showTab('approved');
+}
+
+// 查看大图
+function showBigImg(src) {
+  const imgModal = document.createElement('div');
+  imgModal.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.97); z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    cursor: zoom-out;
+  `;
+  imgModal.innerHTML = `<img src="${src}" style="max-width:94%;max-height:94%;border-radius:8px;">`;
+  imgModal.onclick = () => document.body.removeChild(imgModal);
+  document.body.appendChild(imgModal);
+}
+</script>
+</body>
+</html>
