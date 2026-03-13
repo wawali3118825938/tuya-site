@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>登录 - 广州大学城涂鸦档案</title>
+<style>
+/* 使用和主站一样的样式 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #8fa8c6;
+  --primary-light: #c0d4e9;
+  --dark-bg: #0f1014;
+  --dark-card: #1a1c23;
+  --dark-hover: #242730;
+  --text-light: #e8e9ec;
+  --text-muted: #9ca3af;
+  --text-faint: #6b7280;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body { 
+  font-family: "Noto Serif SC", "Inter", serif;
+  background: var(--dark-bg);
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23242730' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 10% 20%, rgba(80, 90, 110, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(70, 80, 100, 0.08) 0%, transparent 40%);
+  color: var(--text-light);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container { 
+  width: 100%; max-width: 450px; 
+  background: var(--dark-card);
+  padding: 40px; border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+h1 { 
+  text-align: center; color: var(--primary-light); 
+  margin-bottom: 30px; font-weight: 500;
+}
+.input-box { margin-bottom: 20px; }
+.input-box label { 
+  display: block; margin-bottom: 5px; 
+  color: var(--text-muted); font-weight: 400;
+}
+.input-box input { 
+  width: 100%; padding: 12px; background: var(--dark-bg);
+  border: 1px solid rgba(255,255,255,0.08); color: var(--text-light);
+  border-radius: var(--radius-sm); font-size: 16px; font-family: inherit;
+}
+.btn { 
+  width: 100%; padding: 12px; background: var(--primary);
+  color: var(--dark-bg); border: none; border-radius: var(--radius-sm);
+  font-size: 16px; cursor: pointer; margin-top: 10px; font-weight: bold;
+  transition: var(--transition);
+}
+.btn:hover { 
+  background: var(--primary-light); transform: translateY(-2px);
+}
+.links { text-align: center; margin-top: 20px; }
+.links a { 
+  color: var(--primary); text-decoration: none; 
+  margin: 0 5px; transition: var(--transition);
+}
+.links a:hover { color: var(--primary-light); }
+.message { 
+  padding: 10px; border-radius: var(--radius-sm); 
+  margin-bottom: 20px; display: none; text-align: center;
+}
+.success { 
+  background: rgba(76, 175, 80, 0.1); 
+  color: #4CAF50; border: 1px solid rgba(76, 175, 80, 0.3);
+}
+.error { 
+  background: rgba(244, 67, 54, 0.1); 
+  color: #f44336; border: 1px solid rgba(244, 67, 54, 0.3);
+}
+.back-link { 
+  display: block; text-align: center; margin-bottom: 20px;
+  color: var(--text-muted); text-decoration: none;
+}
+.back-link:hover { color: var(--primary-light); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">← 返回网站首页</a>
+  <h1>📤 我要上传</h1>
+  
+  <div id="message" class="message"></div>
+  
+  <div class="input-box">
+    <label>昵称 *</label>
+    <input type="text" id="nickname" placeholder="您的显示名称">
+  </div>
+  
+  <div class="input-box">
+    <label>邮箱 *</label>
+    <input type="email" id="email" placeholder="您的邮箱地址（用于接收审核通知）">
+  </div>
+  
+  <button class="btn" onclick="login()">开始上传</button>
+  
+  <div class="links">
+    <a href="index.html">返回首页</a>
+  </div>
+</div>
+
+<script>
+// 登录功能
+function login() {
+  const nickname = document.getElementById('nickname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const messageDiv = document.getElementById('message');
+  
+  // 验证
+  if (!nickname || !email) {
+    showMessage('请填写昵称和邮箱！', 'error');
+    return;
+  }
+  
+  if (nickname.length < 2) {
+    showMessage('昵称至少2个字符！', 'error');
+    return;
+  }
+  
+  if (!email.includes('@') || !email.includes('.')) {
+    showMessage('请输入有效的邮箱地址！', 'error');
+    return;
+  }
+  
+  // 保存用户信息到本地存储
+  const userData = {
+    nickname: nickname,
+    email: email,
+    loginTime: new Date().toLocaleString()
+  };
+  
+  localStorage.setItem('guangzhou_user', JSON.stringify(userData));
+  
+  showMessage('登录成功！正在跳转到上传页面...', 'success');
+  
+  // 跳转到上传页面
+  setTimeout(() => {
+    window.location.href = 'upload.html';
+  }, 1500);
+}
+
+function showMessage(text, type) {
+  const messageDiv = document.getElementById('message');
+  messageDiv.textContent = text;
+  messageDiv.className = 'message ' + type;
+  messageDiv.style.display = 'block';
+  setTimeout(() => { messageDiv.style.display = 'none'; }, 3000);
+}
+
+// 检查是否已登录
+const userData = localStorage.getItem('guangzhou_user');
+if (userData) {
+  const user = JSON.parse(userData);
+  document.getElementById('nickname').value = user.nickname;
+  document.getElementById('email').value = user.email;
+}
+</script>
+</body>
+</html>
