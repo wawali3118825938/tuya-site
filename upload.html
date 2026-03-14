@@ -7,9 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<!-- 使用正确的 EmailJS SDK 版本 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-    emailjs.init('jU9IXLb3WCBZ5p0rR');
+    // 使用正确的初始化方法
+    (function() {
+        emailjs.init('jU9IXLb3WCBZ5p0rR');
+    })();
 </script>
 <style>
 * {
@@ -615,6 +619,10 @@ window.onload = function() {
   
   // 设置拖拽功能
   setupDragDrop();
+  
+  // 添加调试日志
+  console.log('EmailJS 初始化状态:', typeof emailjs);
+  console.log('EmailJS 版本:', emailjs.VERSION);
 };
 
 // 地点类别和具体地点的映射
@@ -848,7 +856,7 @@ function uploadArticle() {
   });
 }
 
-// 发送照片投稿邮件
+// 发送照片投稿邮件 - 修复版
 function sendPhotoEmail(data) {
   const templateParams = {
     nickname: data.nickname,
@@ -859,23 +867,28 @@ function sendPhotoEmail(data) {
     author: data.author,
     photographer: data.photographer,
     find_time: data.find_time,
-    description: data.description,
+    description: data.description || '无',
     submission_time: data.submission_time
   };
   
-  // 使用您的 EmailJS 配置
+  console.log('发送照片投稿邮件，参数:', templateParams);
+  console.log('Service ID:', 'service_nte32ag');
+  console.log('Template ID:', 'template_udz9tlv');
+  console.log('Public Key:', 'jU9IXLb3WCBZ5p0rR');
+  
+  // 使用正确的 EmailJS send 方法
   emailjs.send('service_nte32ag', 'template_udz9tlv', templateParams)
     .then(function(response) {
       console.log('照片投稿邮件发送成功!', response.status, response.text);
       showSuccess('照片提交成功！管理员会尽快审核，审核通过后会邮件通知您。');
     }, function(error) {
-      console.log('邮件发送失败...', error);
+      console.error('邮件发送失败...', error);
       // 即使邮件发送失败，也显示成功（本地存储已保存）
       showSuccess('照片已保存到本地！管理员会尽快审核您的投稿。');
     });
 }
 
-// 发送文章投稿邮件
+// 发送文章投稿邮件 - 修复版
 function sendArticleEmail(data) {
   const templateParams = {
     nickname: data.nickname,
@@ -887,13 +900,18 @@ function sendArticleEmail(data) {
     submission_time: data.submission_time
   };
   
-  // 使用您的 EmailJS 配置
+  console.log('发送文章投稿邮件，参数:', templateParams);
+  console.log('Service ID:', 'service_nte32ag');
+  console.log('Template ID:', 'template_bwg3ho9');
+  console.log('Public Key:', 'jU9IXLb3WCBZ5p0rR');
+  
+  // 使用正确的 EmailJS send 方法
   emailjs.send('service_nte32ag', 'template_bwg3ho9', templateParams)
     .then(function(response) {
       console.log('文章投稿邮件发送成功!', response.status, response.text);
       showSuccess('文章投稿成功！管理员会尽快审核，审核通过后会邮件通知您。');
     }, function(error) {
-      console.log('邮件发送失败...', error);
+      console.error('邮件发送失败...', error);
       // 即使邮件发送失败，也显示成功（本地存储已保存）
       showSuccess('文章已保存到本地！管理员会尽快审核您的投稿。');
     });
